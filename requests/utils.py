@@ -11,14 +11,23 @@ that are also useful for external consumption.
 
 import cgi
 import codecs
-import cookielib
 import os
 import random
 import re
 import zlib
 import urllib
 
-from urllib2 import parse_http_list as _parse_list_header
+# Python module compatiblity.
+from . import compat
+from .compat import six
+
+# Grab cookielib.
+cookielib = six.moves.http_cookiejar
+
+if compat.is_py3:
+    from urllib.request import parse_http_list as _parse_list_header
+else:
+    from urllib2 import parse_http_list as _parse_list_header
 
 
 def guess_filename(obj):
