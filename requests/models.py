@@ -308,7 +308,14 @@ class Request(object):
 
         path = requote_path(path)
 
-        url = str(urlunparse([ scheme, netloc, path, params, query, fragment ]))
+        # a = [scheme, netloc, path, params, query, fragment]
+        print([scheme, netloc, path, params, query, fragment])
+        # raise
+
+        # for a in a:
+            # print(bytes(a, 'ascii'))
+
+        url = str(urlunparse([scheme, netloc, path, params, query, fragment]))
 
         if self._enc_params:
             if urlparse(url).query:

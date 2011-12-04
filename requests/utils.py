@@ -391,9 +391,18 @@ def requote_path(path):
     """
 
     if compat.is_py3:
-        parts = eval('path.split(b"/")')
+        slash = eval("'/'")
+        space = eval("''")
+        _unicode = str
     else:
-        parts = eval('path.split("/")')
+        slash = eval("'/'")
+        space = eval("''")
+        _unicode = unicode
 
-    parts = (quote(unquote(part), safe="") for part in parts)
-    return "/".join(parts)
+    if compat.is_py3:
+        path = _unicode(path)
+
+    parts = path.split(slash)
+
+    parts = (quote(unquote(p), safe=space) for p in parts)
+    return slash.join(parts)

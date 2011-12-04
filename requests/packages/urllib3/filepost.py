@@ -14,13 +14,14 @@ import os
 
 from ... import compat
 
-if compat.is_py25:
+if compat.is_py2:
 
     try:
         import thread
     except ImportError:
         import dummy_thread as thread
     _counter_lock = thread.allocate_lock()
+
 else:
     try:
         import _thread
