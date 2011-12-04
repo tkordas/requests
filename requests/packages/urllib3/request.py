@@ -4,8 +4,12 @@
 # This module is part of urllib3 and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
 
+from ... import compat
 
-from urllib import urlencode
+if compat.is_py3:
+    from urllib.parse import urlencode
+else:
+    from urllib import urlencode
 
 from .filepost import encode_multipart_formdata
 

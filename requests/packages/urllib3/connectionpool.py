@@ -6,10 +6,20 @@
 
 import logging
 import socket
+import sys
 
+from ...compat import six
 
-from httplib import HTTPConnection, HTTPSConnection, HTTPException
-from Queue import Queue, Empty, Full
+# from httplib import HTTPConnection, HTTPSConnection, HTTPException
+HTTPConnection = six.moves.http_client.HTTPConnection
+HTTPSConnection = six.moves.http_client.HTTPSConnection
+HTTPException = six.moves.http_client.HTTPException
+
+# from Queue import Queue, Empty, Full
+Queue = six.moves.queue.Queue
+Empty = six.moves.queue.Empty
+Full = six.moves.queue.Full
+
 from select import select
 from socket import error as SocketError, timeout as SocketTimeout
 
@@ -336,16 +346,16 @@ class HTTPConnectionPool(ConnectionPool, RequestMethods):
             #     ``response.release_conn()`` is called (implicitly by
             #     ``response.read()``)
 
-        except (SocketTimeout, Empty), e:
+        except (SocketTimeout, Empty) as e:
             # Timed out either by socket or queue
             raise TimeoutError("Request timed out after %s seconds" %
                                self.timeout)
 
-        except (BaseSSLError), e:
+        except (BaseSSLError) as e:
             # SSL certificate error
             raise SSLError(e)
 
-        except (HTTPException, SocketError), e:
+        except (HTTPException, SocketError) as e:
             # Connection broken, discard. It will be replaced next _get_conn().
             conn = None
 
