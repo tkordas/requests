@@ -22,9 +22,6 @@ if sys.argv[-1] == "test":
 
 required = []
 
-if sys.version_info[:2] < (2,6):
-    required.append('simplejson')
-
 setup(
     name='requests',
     version=requests.__version__,
@@ -48,10 +45,10 @@ setup(
         'Natural Language :: English',
         'License :: OSI Approved :: ISC License (ISCL)',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.5',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
-        # 'Programming Language :: Python :: 3.0',
-        # 'Programming Language :: Python :: 3.1',
+        'Programming Language :: Python :: 3.0',
+        'Programming Language :: Python :: 3.1',
+        'Programming Language :: Python :: 3.2',
     ),
 )
