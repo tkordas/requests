@@ -12,11 +12,14 @@ import envoy
 from requests import HTTPError
 from requests.auth import HTTPBasicAuth, HTTPDigestAuth
 
+from requests import compat
+
 try:
     import omnijson as json
 except ImportError:
     import json
 
+print(compat)
 
 # TODO: Detect an open port.
 PORT = os.environ.get('HTTPBIN_PORT', '7077')
@@ -290,11 +293,29 @@ class RequestsTestSuite(unittest.TestCase):
 
             url = service('/get')
 
-            requests.get(url, params={'foo': u'føø'})
-            requests.get(url, params={u'føø': u'føø'})
-            requests.get(url, params={'føø': 'føø'})
-            requests.get(url, params={'foo': u'foo'})
-            requests.get(service('ø'), params={'foo': u'foo'})
+            if compat.is_py3:
+
+                for o in (
+                    "requests.get(url, params={b'foo': 'føø'})",
+                    "requests.get(url, params={'føø': 'føø'})",
+                    "requests.get(url, params={'føø': 'føø'})",
+                    "requests.get(url, params={b'foo': 'foo'})",
+                    "requests.get(service('ø'), params={'foo': 'foo'})"
+                ):
+                    eval(o)
+
+            else:
+
+                for o in (
+                    "requests.get(url, params={'foo': u'føø'})",
+                    "requests.get(url, params={u'føø': u'føø'})",
+                    "requests.get(url, params={'føø': 'føø'})",
+                    "requests.get(url, params={'foo': u'foo'})",
+                    "requests.get(service('ø'), params={'foo': u'foo'})"
+                ):
+                    eval(o)
+
+
 
 
     def test_httpauth_recursion(self):
