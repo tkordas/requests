@@ -8,6 +8,9 @@ Data structures that power Requests.
 
 """
 
+from .compat import six
+iterkeys = six.iterkeys
+
 
 class CaseInsensitiveDict(dict):
     """Case-insensitive Dictionary
@@ -18,7 +21,7 @@ class CaseInsensitiveDict(dict):
     @property
     def lower_keys(self):
         if not hasattr(self, '_lower_keys') or not self._lower_keys:
-            self._lower_keys = dict((k.lower(), k) for k in self.iterkeys())
+            self._lower_keys = dict((k.lower(), k) for k in iterkeys(self))
         return self._lower_keys
 
     def _clear_lower_keys(self):

@@ -26,9 +26,12 @@ cookielib = six.moves.http_cookiejar
 
 if compat.is_py3:
     from urllib.request import parse_http_list as _parse_list_header
+    from urllib.parse import quote, unquote
     basestring = str
+
 else:
     from urllib2 import parse_http_list as _parse_list_header
+    from urllib import quote, unquote
 
 
 def guess_filename(obj):
@@ -386,6 +389,11 @@ def requote_path(path):
     This function passes the given path through an unquote/quote cycle to
     ensure that it is fully and consistenty quoted.
     """
-    parts = path.split("/")
-    parts = (urllib.quote(urllib.unquote(part), safe="") for part in parts)
+
+    if compat.is_py3:
+        parts = eval('path.split(b"/")')
+    else:
+        parts = eval('path.split("/")')
+
+    parts = (quote(unquote(part), safe="") for part in parts)
     return "/".join(parts)

@@ -7,7 +7,6 @@ requests.models
 This module contains the primary objects that power Requests.
 """
 
-import urllib
 import zlib
 
 # from urlparse import urlparse, urlunparse, urljoin, urlsplit
@@ -35,9 +34,11 @@ from . import compat
 # from .compat import six
 
 if compat.is_py3:
-    from urllib.parse import urlparse, urlunparse, urljoin, urlsplit
+    from urllib.parse import urlparse, urlunparse, urljoin, urlsplit, urlencode
+    unicode = str
 else:
     from urlparse import urlparse, urlunparse, urljoin, urlsplit
+    from urllib import urlencode
 
 
 
@@ -283,7 +284,7 @@ class Request(object):
                 for v in isinstance(vs, list) and vs or [vs]:
                     result.append((k.encode('utf-8') if isinstance(k, unicode) else k,
                                    v.encode('utf-8') if isinstance(v, unicode) else v))
-            return result, urllib.urlencode(result, doseq=True)
+            return result, urlencode(result, doseq=True)
         else:
             return data, data
 
