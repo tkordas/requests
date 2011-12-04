@@ -11,7 +11,13 @@ import time
 import hashlib
 
 from base64 import b64encode
-from urlparse import urlparse
+
+from . import compat
+
+if compat.is_py3:
+   from urllib.parse import urlparse
+else:
+    from urlparse import urlparse
 
 from .utils import randombytes, parse_dict_header
 

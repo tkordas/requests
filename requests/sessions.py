@@ -14,6 +14,10 @@ from .models import Request
 from .hooks import dispatch_hook
 from .utils import header_expand
 from .packages.urllib3.poolmanager import PoolManager
+from . import compat
+
+if compat.is_py3:
+    basestring = str
 
 
 def merge_kwargs(local_kwarg, default_kwarg):
@@ -142,7 +146,7 @@ class Session(object):
         params = {} if params is None else params
         hooks = {} if hooks is None else hooks
         # use session's hooks as defaults
-        for key, cb in self.hooks.iteritems():
+        for key, cb in self.hooks.items():
             hooks.setdefault(key, cb)
 
         # Expand header values.

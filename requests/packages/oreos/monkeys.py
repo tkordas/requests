@@ -216,6 +216,28 @@ Finis.
 #     |----helps out font-lock
 
 #
+
+
+# Character translation through look-up table.
+def translate(s, table, deletions=""):
+    """translate(s,table [,deletions]) -> string
+
+    Return a copy of the string s, where all characters occurring
+    in the optional argument deletions are removed, and the
+    remaining characters have been mapped through the given
+    translation table, which must be a string of length 256.  The
+    deletions argument is not allowed for Unicode strings.
+
+    """
+    if deletions or table is None:
+        return s.translate(table, deletions)
+    else:
+        # Add s[:0] so that if s is Unicode and table is an 8-bit string,
+        # table is converted to Unicode.  This means that table *cannot*
+        # be a dictionary -- for that feature, use u.translate() directly.
+        return s.translate(table + s[:0])
+
+
 # Import our required modules
 #
 import string
@@ -318,10 +340,10 @@ _Translator       = {
     '\375' : '\\375',  '\376' : '\\376',  '\377' : '\\377'
     }
 
-_idmap = ''.join(chr(x) for x in xrange(256))
+_idmap = ''.join(chr(x) for x in range(256))
 
 def _quote(str, LegalChars=_LegalChars,
-           idmap=_idmap, translate=string.translate):
+           idmap=_idmap, translate=translate):
     #
     # If the string does not need to be double-quoted,
     # then just return the string.  Otherwise, surround
@@ -459,7 +481,7 @@ class Morsel(dict):
 
     def set(self, key, val, coded_val,
             LegalChars=_LegalChars,
-            idmap=_idmap, translate=string.translate):
+            idmap=_idmap, translate=translate):
         # First we verify that the key isn't a reserved word
         # Second we make sure it only contains legal characters
         if key.lower() in self._reserved:

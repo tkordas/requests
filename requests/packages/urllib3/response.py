@@ -9,11 +9,9 @@ import logging
 import zlib
 
 
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO # pylint: disable-msg=W0404
+from ... import compat
 
+StringIO = compat.BytesIO
 
 from .exceptions import HTTPError
 

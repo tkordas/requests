@@ -26,6 +26,7 @@ cookielib = six.moves.http_cookiejar
 
 if compat.is_py3:
     from urllib.request import parse_http_list as _parse_list_header
+    basestring = str
 else:
     from urllib2 import parse_http_list as _parse_list_header
 
