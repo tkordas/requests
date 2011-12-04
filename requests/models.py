@@ -10,7 +10,7 @@ This module contains the primary objects that power Requests.
 import urllib
 import zlib
 
-from urlparse import urlparse, urlunparse, urljoin, urlsplit
+# from urlparse import urlparse, urlunparse, urljoin, urlsplit
 from datetime import datetime
 
 from .hooks import dispatch_hook
@@ -28,6 +28,17 @@ from .exceptions import (
 from .utils import (
     get_encoding_from_headers, stream_decode_response_unicode,
     decode_gzip, stream_decode_gzip, guess_filename, requote_path)
+
+
+# Python module compatiblity.
+from . import compat
+# from .compat import six
+
+if compat.is_py3:
+    from urllib.parse import urlparse, urlunparse, urljoin, urlsplit
+else:
+    from urlparse import urlparse, urlunparse, urljoin, urlsplit
+
 
 
 REDIRECT_STATI = (codes.moved, codes.found, codes.other, codes.temporary_moved)
@@ -449,13 +460,13 @@ class Request(object):
                 self.sent = True
 
 
-            except MaxRetryError, e:
+            except MaxRetryError as e:
                 if not self.config.get('safe_mode', False):
                     raise ConnectionError(e)
                 else:
                     r = None
 
-            except (_SSLError, _HTTPError), e:
+            except (_SSLError, _HTTPError) as e:
                 if not self.config.get('safe_mode', False):
                     raise Timeout('Request timed out.')
 

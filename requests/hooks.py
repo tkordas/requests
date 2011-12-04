@@ -34,7 +34,7 @@ def dispatch_hook(key, hooks, hook_data):
         try:
             return hooks.get(key).__call__(hook_data) or hook_data
 
-        except Exception, why:
+        except Exception as why:
             warnings.warn(str(why))
 
     return hook_data
