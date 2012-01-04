@@ -64,7 +64,9 @@ class Session(object):
         hooks=None,
         params=None,
         config=None,
-        verify=True):
+        verify=True,
+        client_key=None,
+        client_cert=None):
 
         self.headers = headers or {}
         self.cookies = cookies or {}
@@ -81,7 +83,9 @@ class Session(object):
 
         self.poolmanager = PoolManager(
             num_pools=self.config.get('pool_connections'),
-            maxsize=self.config.get('pool_maxsize')
+            maxsize=self.config.get('pool_maxsize'),
+            key_file=client_key,
+            cert_file=client_cert
         )
 
         # Set up a CookieJar to be used by default
@@ -114,7 +118,9 @@ class Session(object):
         return_response=True,
         config=None,
         prefetch=False,
-        verify=None):
+        verify=None,
+        client_key=None,
+        client_cert=None):
 
         """Constructs and sends a :class:`Request <Request>`.
         Returns :class:`Response <Response>` object.
