@@ -75,7 +75,9 @@ Uh oh, we're not authorized! Let's add authentication. ::
     >>> r.content
     '{"authenticated": true, "user": "user"}'
 
-Mutually authenticated SSL. ::
+
+Mutually authenticated SSL::
+
     >>> s = requests.session(verify=True, client_key='mykey.pem', client_cert='mykey.crt')
     >>> resp = s.get('https://a.b.c.d:1234/my_file')
 
